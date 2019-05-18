@@ -1,0 +1,36 @@
+LipNetで使える用の動画を用意する
+    $ cd ~/try/honnda/video
+    ${input_video_name}.mp4 動画をここに置く
+    $ code make_video.py
+        cap = cv2.VideoCapture('${input_video_name}.mp4')
+        out = cv2.VideoWriter('${output_video_name}.mp4',fourcc, 25.0, (360, 288))
+    $ python make_video.py
+
+
+動画を使ってLipNetで予測
+    $ cd ~/try/honnda/predict
+    $ mkdir ${name}
+    $ cd ~/try/honnda/video
+    $ cp ${output_video_name}.mp4 ../predict/${name}
+    $ cd ../predict/${name}
+    $ code ${name}.sh
+        #!/bin/bash
+
+        cd ~/try/lipnet/LipNet
+        ./my_predict.sh evaluation/models/overlapped-weights368.h5 /home/takashi/try/honnda/predict/${name}/${output_video_name}.mp4
+        cd ~/try/honnda/predict/
+        mv result_split.npy video_face.npy ./${name}
+        cd ./${name}
+    $ chmod +x ${name}.sh
+    $ ./${name}.sh
+
+
+得られた結果をGUIで表示
+    $ cd ~/try/honnda/predict/trump
+    $ cp show_video_and_text.py ../${name}/
+    $ cd ../${name}
+    $ python show_video_and_text.py 
+
+
+tkonno1
+2978
